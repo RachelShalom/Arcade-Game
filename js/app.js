@@ -40,14 +40,14 @@ var Player = function(x, y) {
 }
 
 //update method
-Player.prototype.update = function(dt) {
+Player.prototype.update = function() {
         this.x = this.x;
         this.y = this.y;
+        this.checkCollisions();
 
     }
     //render the player
 Player.prototype.render = function() {
-        console.log(this.sprite);
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
     }
@@ -73,13 +73,17 @@ Player.prototype.handleInput = function(direction) {
     }
 
 };
-Player.prototype.checkCollisions = function(allEnemies) {
+
+Player.prototype.reset = function() {
+    this.y = 400;
+    this.x = 0;
+};
+Player.prototype.checkCollisions = function() {
     for (var i = 0; i < allEnemies.length; i++) {
         if (this.x >= allEnemies[i].x && this.x < allEnemies[i].x + 100 &&
-            this.y >= allEnemies[i].y && this.y < allEnemies[i].x + 83) {
+            this.y >= allEnemies[i].y - 83 && this.y < allEnemies[i].x) {
             console.log("coliisssssssssion");
-            this.x = 0;
-            this.y = 400;
+            this.reset();
         }
 
     }
@@ -89,10 +93,8 @@ Player.prototype.checkCollisions = function(allEnemies) {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-
+var allEnemies = [new Enemy(0, 63, 256), new Enemy(101, 146, 200), new Enemy(202, 229, 210)];
 var player = new Player(0, 400);
-var allEnemies = [new Enemy(0, 83, 256), new Enemy(101, 166, 256), new Enemy(202, 249, 256)];
-
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
