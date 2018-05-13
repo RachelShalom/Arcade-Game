@@ -22,6 +22,7 @@ Enemy.prototype.update = function(dt) {
     }
     this.x = this.x + this.speed * dt;
     //this.y = this.y + this.speed * dt;
+    //console.log("enemy.x: "+this.x+" enemy.y: "+ this.y);
 };
 
 // Draw the enemy on the screen, required method for game
@@ -39,14 +40,14 @@ var Player = function(x, y) {
     this.y = y;
 }
 
-//update method
+//Player update method
 Player.prototype.update = function() {
         this.x = this.x;
         this.y = this.y;
         this.checkCollisions();
 
     }
-    //render the player
+    //Player render the player
 Player.prototype.render = function() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
@@ -55,33 +56,35 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(direction) {
     switch (direction) {
         case 'left':
-            if (this.x > 100) { this.x = this.x - 100; }
-            console.log("left");
+            if (this.x >= 101) { this.x = this.x - 101; }
+            console.log("x: "+this.x+" "+"y: "+this.y);
             break;
         case 'up':
-            this.y = this.y - 83;
-            console.log("up");
+            if( this.y>=83){this.y = this.y - 83;}
+            console.log("x: "+this.x+" "+"y: "+this.y);
             break;
         case 'right':
-            this.x = this.x + 100;
-            console.log("right");
+            if (this.x<404){this.x = this.x + 101;}
+            console.log("x: "+this.x+" "+"y: "+this.y);
             break;
         case 'down':
-            this.y = this.y + 83;
-            console.log("down");
+            if(this.y<415){this.y = this.y + 83;}
+            console.log("x: "+this.x+" "+"y: "+this.y);
             break;
     }
 
 };
 
 Player.prototype.reset = function() {
-    this.y = 400;
-    this.x = 0;
+    this.y = 415;
+    this.x = 202;
 };
+
+//check if the player and enemy are in the same "square" in the grid
+//
 Player.prototype.checkCollisions = function() {
     for (var i = 0; i < allEnemies.length; i++) {
-        if (this.x >= allEnemies[i].x && this.x < allEnemies[i].x + 100 &&
-            this.y >= allEnemies[i].y - 83 && this.y < allEnemies[i].x) {
+        if (this.x >= allEnemies[i].x &&this.x<allEnemies[i].x+51 &&this.y === allEnemies[i].y+20 ) {
             console.log("coliisssssssssion");
             this.reset();
         }
@@ -94,7 +97,7 @@ Player.prototype.checkCollisions = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [new Enemy(0, 63, 256), new Enemy(101, 146, 200), new Enemy(202, 229, 210)];
-var player = new Player(0, 400);
+var player = new Player(202, 415);
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
