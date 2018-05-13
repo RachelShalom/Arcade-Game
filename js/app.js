@@ -45,6 +45,7 @@ Player.prototype.update = function() {
         this.x = this.x;
         this.y = this.y;
         this.checkCollisions();
+        this.win();
 
     }
     //Player render the player
@@ -74,14 +75,13 @@ Player.prototype.handleInput = function(direction) {
     }
 
 };
-
+//set the p;layer back to the positionin the beginnning 
 Player.prototype.reset = function() {
     this.y = 415;
     this.x = 202;
 };
 
 //check if the player and enemy are in the same "square" in the grid
-//
 Player.prototype.checkCollisions = function() {
     for (var i = 0; i < allEnemies.length; i++) {
         if (this.x >= allEnemies[i].x &&this.x<allEnemies[i].x+51 &&this.y === allEnemies[i].y+20 ) {
@@ -92,6 +92,26 @@ Player.prototype.checkCollisions = function() {
     }
 
 }
+//check if the player has a WIN. A winhappens when the player rich the water (this.y=0)
+// Get the modal
+var modal = document.getElementById('myModal');
+var btn= document.getElementById('myBtn');
+
+Player.prototype.win= function(){
+    var p= this; //saving the "this" as the Player object
+     if( this.y ===0){
+        modal.style.display = "block";
+        btn.onclick = function() {
+            modal.style.display = "none"; 
+           p.reset();
+        }
+           
+            console.log("WINNNNNNNNNNNNNNNNN");
+    }
+  
+      
+    }
+
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
