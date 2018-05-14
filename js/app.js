@@ -1,5 +1,6 @@
 // Enemies our player must avoid
-var Enemy = function(x, y, speed) {
+"use strict";
+var Enemy = function(x, y, speed, width, height) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -8,6 +9,8 @@ var Enemy = function(x, y, speed) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
+    this.width=width;
+    this.height=height;
     this.speed = speed;
 };
 
@@ -21,23 +24,26 @@ Enemy.prototype.update = function(dt) {
         this.x = 0;
     }
     this.x = this.x + this.speed * dt;
-    //this.y = this.y + this.speed * dt;
-    //console.log("enemy.x: "+this.x+" enemy.y: "+ this.y);
+   
+   
 };
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y,this.width, this.height);
+    
 };
 
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
 
-var Player = function(x, y) {
+var Player = function(x, y,width,height) {
     this.sprite = 'images/char-boy.png';
     this.x = x;
     this.y = y;
+    this.width=width;
+    this.height= height;
 }
 
 //Player update method
@@ -46,12 +52,13 @@ Player.prototype.update = function() {
         this.y = this.y;
         this.checkCollisions();
         this.win();
+        
 
     }
     //Player render the player
 Player.prototype.render = function() {
-        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y, this.width, this.height);
+    
     }
     //handle keys
 Player.prototype.handleInput = function(direction) {
@@ -84,7 +91,7 @@ Player.prototype.reset = function() {
 //check if the player and enemy are in the same "square" in the grid
 Player.prototype.checkCollisions = function() {
     for (var i = 0; i < allEnemies.length; i++) {
-        if (this.x >= allEnemies[i].x &&this.x<allEnemies[i].x+51 &&this.y === allEnemies[i].y+20 ) {
+        if (this.x +this.width-10>= allEnemies[i].x &&this.x<=allEnemies[i].x+allEnemies[i].width &&this.y ==allEnemies[i].y+20 ) {
             console.log("coliisssssssssion");
             this.reset();
         }
@@ -113,11 +120,11 @@ Player.prototype.win= function(){
     }
 
 
-// Now instantiate your objects.
+// Now instantiate your objects with with different size.(with the given img the bugs and player width is 101 and height is 171)
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [new Enemy(0, 63, 256), new Enemy(101, 146, 200), new Enemy(202, 229, 210)];
-var player = new Player(202, 415);
+var allEnemies = [new Enemy(0, 63, 170,101,171), new Enemy(101, 146, 250,120,171), new Enemy(202, 229,200,101,171)];
+var player = new Player(202, 415, 101, 171);
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
